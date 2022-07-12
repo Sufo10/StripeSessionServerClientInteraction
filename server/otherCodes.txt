@@ -1,0 +1,39 @@
+  //charge
+  const charge = await stripe.charges.create({
+    amount: 99999,
+    currency: "usd",
+    source: "tok_mastercard",
+    receipt_email: "habuk1080@gmail.com",
+    description: "Payment for JS course",
+  });
+  res.json(charge);
+
+
+  //create payment method
+  const paymentMethod = await stripe.paymentMethods.create({
+    type: "card",
+    card: {
+      number: "4242424242424242",
+      exp_month: 9,
+      exp_year: 2023,
+      cvc: "123",
+    },
+  });
+
+
+  //payment intent
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 2000,
+    currency: "usd",
+    payment_method_types: ["card"],
+    customer: "cus_LjDQjUl7Zlbe0K",
+    confirm: true,
+    description: "payment Intent",
+    payment_method: "pm_1L1l98K2amf6QPechnCxRoqv",
+  });
+
+  // create refund object
+  const refund = await stripe.refunds.create({
+    charge: "ch_3L1hnZK2amf6QPec15siOxuy",
+    reason: "requested_by_customer",
+  });
